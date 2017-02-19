@@ -1,7 +1,12 @@
 import sys,urllib2,os,httplib,glob,shutil,json
-from urllib import urlretrieve
 from urlparse import urlparse
 from module import BeautifulSoup
+
+def download(url, path):
+	req = urllib2.Request(url, headers={'User-Agent' : "Magic Browser"})
+	con = urllib2.urlopen(req)
+	with open(path, 'wb') as output:
+		output.write(con.read())
 
 def cleanup(dirname):
 	for jpgFile in glob.glob(os.path.join(dirname, '*.jpg')):
@@ -56,7 +61,7 @@ def getit(dirname,target_url,setting):
 			os.makedirs(dirname)
 
 		if not os.path.exists(dirname+"/"+chapter+"-"+name):
-			urlretrieve(url, dirname+"/"+chapter+"-"+name)
+			download(url, dirname+"/"+chapter+"-"+name)
 
 		return next_url
 
